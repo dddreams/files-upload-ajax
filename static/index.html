@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		#showImg{
+			width: 500px;
+			height: 350px;
+			margin-top:20px;
+		}
+	</style>
+	<script type="text/javascript" src="res/js/jquery-3.1.1.js"></script>
+	<script type="text/javascript" src="res/js/ajaxfileupload.js"></script>
+</head>
+<body>
+	<div class="uploadImg">
+		<input type="file" accept=".png,.bmp,.jpg,jpeg" id="imgFile" name="imgFile" onchange="changeImgOne(this)" value=""/>
+		<input type="text" id="imgName" name="imgName" readonly value="" />
+	</div>
+
+	<div id="showImg">
+		<img id="ImgInner" alt="" src="" height="100%" width="100%">
+	</div>
+
+	<button type="button" class="submit">提交</button>
+<script type="text/javascript">
+$(function(){
+	$('.submit').on('click', function(){
+		$.ajaxFileUpload({
+			fileElementId : 'imgFile',
+			url : 'upload/uploadImg',
+			dataType : 'text',
+			data : {},
+			success : function(data) {
+				var result = JSON.parse($(data).text());
+				// dosomething ...
+			},
+			error : function(data) {
+				// dosomething ...
+			}
+		});
+	});
+});
+
+// 添加附件
+function changeImgOne(obj){ //上传文件点击事件
+	var imgObj = document.getElementById("imgFile");
+	var imgObjPreview = document.getElementById("ImgInner");
+	if(imgObj.files && imgObj.files[0]){
+		var imgName = imgObj.files[0].name;
+		$("#imgName").val(imgName);
+		imgObjPreview.src = window.URL.createObjectURL(imgObj.files[0]);
+	}
+	return true;
+}
+</script>
+</body>
+</html>
